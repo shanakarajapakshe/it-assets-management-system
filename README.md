@@ -1,33 +1,150 @@
-# IT Asset Manager Pro v2.0
+# 🖥️ IT Assets Management System
 
-Fully offline Electron desktop app. No database. Data stored in Excel files.
+A cross-platform desktop application for managing IT assets — including laptop inventories, employee PC assignments, and IT procurement tracking. Built with **Electron.js** and **ExcelJS**, it provides a clean GUI for managing and updating Excel-based asset records without needing spreadsheet expertise.
 
-## Quick Start
+---
 
-```bash
-cd it-asset-v2
+## 🌐 Live Project Page (GitHub Pages)
 
-npm start
+This project is published using **GitHub Pages** for documentation and preview purposes.
+
+🔗 **Live URL:**  
+
+---
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Data Files](#-data-files)
+- [License](#-license)
+
+---
+
+## ✨ Features
+
+- 📦 **Laptop Inventory Management** — Track and update the organization's laptop inventory
+- 👤 **Employee PC Assignment Tracking** — View and manage which PCs are assigned to which employees
+- 🛒 **IT Procurement Tracking** — Log and monitor newly purchased or replacement IT items
+- 📊 **Excel Integration** — Reads and writes `.xlsx` files directly via ExcelJS
+- 🖥️ **Cross-Platform** — Runs on Windows, macOS, and Linux via Electron
+- 🔒 **Secure IPC** — Uses Electron's context-isolated preload scripts for safe renderer-to-main communication
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Desktop Framework | [Electron.js](https://www.electronjs.org/) |
+| Excel Processing | [ExcelJS](https://github.com/exceljs/exceljs) |
+| Frontend | HTML, CSS, Vanilla JavaScript |
+| Runtime | Node.js |
+
+---
+
+## 📁 Project Structure
+
+```
+it-assets-management-system/
+├── assets/
+│   └── icons/              # App icons (.png, .ico, .icns)
+├── data/
+│   ├── CSEC_Laptop_Inventory.xlsx
+│   ├── Employee_PCs_Using_Details.xlsx
+│   ├── Newly_Purchasing_IT_Items_Replacing.xlsx
+│   └── backups/            # Auto-generated backups
+├── src/
+│   ├── main/
+│   │   ├── main.js         # Electron main process
+│   │   └── excelManager.js # Excel read/write logic
+│   ├── preload/
+│   │   └── preload.js      # Context bridge (IPC exposure)
+│   └── renderer/
+│       ├── index.html      # Main UI
+│       ├── app.js          # Renderer process logic
+│       └── styles/
+│           └── main.css    # Application styles
+├── package.json
+└── README.md
 ```
 
-## All Features Implemented
+---
 
-1. Dashboard - 8 KPI cards, dept bar chart, status donut, monthly purchases chart, warranty alerts
-2. Employee PC Management - Full CRUD, auto Asset IDs (PC-0001), return tracking, search/filter/sort/pagination
-3. Purchasing Management - Full CRUD, auto Item IDs (IT-0001), assign/replace wizard
-4. Excel Data Handling - Atomic writes (tmp→rename), write lock, styled output, auto-filter, frozen headers
-5. Asset Status Logic - Replacement links old PC → Replaced, IT item → Assigned
-6. Reports - Export Excel or PDF, filter by dept/status/date, 4 quick presets
-7. Search + Pagination - 12 per page, smart pager, sort by any column
-8. Asset ID auto-generation - PC-0001...PC-9999 and IT-0001...IT-9999
+## ✅ Prerequisites
 
-## Data Location
-- Dev: ./data/
-- Production: %APPDATA%/it-asset-manager-pro/data/
+- [Node.js](https://nodejs.org/) v16 or higher
+- npm (comes with Node.js)
 
-## Backup System
-Auto-backup before every write. Max 10 per file. View in Backups page.
-=======
-# it-assets-management-system
-A desktop-based IT Assets Management System designed to track hardware, software, and asset allocation within an organization.
+---
 
+## 🚀 Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/your-username/it-assets-management-system.git
+   cd it-assets-management-system
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Run the application**
+
+   ```bash
+   npm start
+   ```
+
+---
+
+## 🏗️ Build for Distribution
+
+To package the app as a standalone executable:
+
+```bash
+npm run build
+```
+
+> Builds are output to the `dist/` folder. Electron Builder is used to generate platform-specific installers.
+
+---
+
+## 📂 Usage
+
+On launch, the application loads data from the Excel files located in the `data/` directory. From the UI you can:
+
+1. **View asset records** across all three datasets
+2. **Add, edit, or remove** asset entries
+3. **Save changes** back to the Excel files
+
+> ⚠️ Do not move or rename the Excel files in the `data/` folder, as the application references them by path.
+
+---
+
+## 🗂️ Data Files
+
+| File | Description |
+|---|---|
+| `CSEC_Laptop_Inventory.xlsx` | Full inventory of laptops owned by the organization |
+| `Employee_PCs_Using_Details.xlsx` | Records of which employees are using which PCs |
+| `Newly_Purchasing_IT_Items_Replacing.xlsx` | Log of new IT purchases and replacement items |
+
+Backup copies of these files are automatically saved to `data/backups/` on each write operation.
+
+---
+
+## 📄 License
+
+This project is licensed under the terms found in the [LICENSE](./LICENSE) file.
+
+---
+
+> Built for internal IT asset tracking. Contributions and issues welcome.
