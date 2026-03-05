@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline';" />
   <title>IT Asset Manager Pro</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,6 +10,15 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="styles/main.css" />
+  <style>
+    /* Browser mode: hide Electron window controls */
+    #tc-min, #tc-max, #tc-cls { display: none !important; }
+    /* Allow text selection in browser */
+    body { user-select: text; }
+    input, select, textarea { user-select: text; }
+    /* Disable app-region drag (desktop only CSS) */
+    #titlebar { -webkit-app-region: no-drag; }
+  </style>
 </head>
 
 <body>
@@ -833,6 +839,7 @@
       }
     } catch (e) { }
   </script>
+  <script src="browser-api.js"></script>
   <script src="app.js"></script>
 </body>
 
