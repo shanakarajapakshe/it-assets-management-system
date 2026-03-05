@@ -47,6 +47,22 @@ function setupTitlebar() {
   api.onWinState(s => {
     document.getElementById('tc-max').textContent = s.maximized ? '❐' : '□';
   });
+
+  // ── Mobile sidebar toggle ──────────────────────────────────────────────────
+  const hamburger = document.getElementById('tc-hamburger');
+  const sidebar   = document.getElementById('sidebar');
+  const backdrop  = document.getElementById('sidebar-backdrop');
+
+  function openSidebar()  { sidebar.classList.add('open');  backdrop.classList.add('visible');    document.body.style.overflow = 'hidden'; }
+  function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('visible'); document.body.style.overflow = ''; }
+
+  hamburger.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+  backdrop.addEventListener('click', closeSidebar);
+
+  // Close sidebar when a nav item is tapped on mobile
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => { if (window.innerWidth <= 768) closeSidebar(); });
+  });
 }
 
 // ─── Navigation ───────────────────────────────────────────────────────────────
