@@ -259,7 +259,7 @@
   // ── Window controls (no-op in browser) ────────────────────────────────────
   const noOp = () => {};
 
-  // ── Assemble global api object ─────────────────────────────────────────────
+  // ── Assemble global api object. ─────────────────────────────────────────────
   window.api = {
     minimize:   noOp,
     maximize:   noOp,
