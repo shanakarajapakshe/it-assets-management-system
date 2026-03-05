@@ -139,21 +139,71 @@
       const items = load('it');
       const laps  = load('lap');
 
-      const empByDept = {};
-      emps.forEach(e => { empByDept[e.department || 'Unknown'] = (empByDept[e.department || 'Unknown'] || 0) + 1; });
+      // KPI counts
+      const totalAssets    = emps.length;
+      const assignedAssets = emps.filter(e => e.status === 'Active').length;
+      const availableAssets= emps.filter(e => e.status === 'Available').length;
+      const replacedAssets = emps.filter(e => e.status === 'Replaced').length;
+      const totalItems     = items.length;
+      const totalLaptops   = laps.length;
+      const activeLaptops  = laps.filter(l => l.status === 'Active').length;
+      const pendingItems   = items.filter(i => i.status === 'Pending').length;
+      const totalCost      = items.reduce((s, i) => s + (parseFloat(i.cost) || 0), 0);
 
-      const itemByStatus = {};
-      items.forEach(i => { itemByStatus[i.status] = (itemByStatus[i.status] || 0) + 1; });
+      // Warranty expiring in 30 days
+      const now = new Date();
+      const in30 = new Date(now.getTime() + 30 * 86400000);
+      const expiringWarrantiesDetail = [
+        ...items.map(i => ({ ...i, _src: 'item',   name: i.itemName,   type: 'IT Item' })),
+        ...laps.map(l  => ({ ...l, _src: 'laptop', name: l.model,      type: 'Laptop'  })),
+      ].filter(x => {
+        if (!x.warrantyExpiry) return false;
+        const d = new Date(x.warrantyExpiry);
+        return d >= now && d <= in30;
+      });
+      const expiringIn30 = expiringWarrantiesDetail.length;
 
-      const lapByStatus = {};
-      laps.forEach(l => { lapByStatus[l.status] = (lapByStatus[l.status] || 0) + 1; });
+      // Dept map: { Dept: { total, active } }
+      const deptMap = {};
+      emps.forEach(e => {
+        const dept = e.department || 'Unknown';
+        if (!deptMap[dept]) deptMap[dept] = { total: 0, active: 0 };
+        deptMap[dept].total++;
+        if (e.status === 'Active') deptMap[dept].active++;
+      });
 
-      const totalCost = items.reduce((s, i) => s + (parseFloat(i.cost) || 0), 0);
+      // Status map for donut (employee PC statuses)
+      const statusMap = {};
+      emps.forEach(e => { statusMap[e.status || 'Unknown'] = (statusMap[e.status || 'Unknown'] || 0) + 1; });
+
+      // Monthly purchases { 'YYYY-MM': { count, cost } }
+      const monthlyPurchases = {};
+      items.forEach(i => {
+        const key = (i.purchaseDate || i.createdAt || '').slice(0, 7) || 'Unknown';
+        if (!monthlyPurchases[key]) monthlyPurchases[key] = { count: 0, cost: 0 };
+        monthlyPurchases[key].count++;
+        monthlyPurchases[key].cost += parseFloat(i.cost) || 0;
+      });
+
+      // Recent replacements (last 10 items with status Replaced/Active that have assignedTo)
+      const recentReplacements = items
+        .filter(i => i.status === 'Replaced' || (i.status === 'Active' && i.assignedTo))
+        .slice(-10).reverse()
+        .map(i => {
+          const emp = emps.find(e => e.id === i.assignedTo);
+          return {
+            ...i,
+            assignedToEmployee: emp ? emp.employeeName : (i.assignedTo || '—'),
+            assignedToDept:     emp ? emp.department    : '—',
+          };
+        });
 
       return ok({
-        employees: { total: emps.length, active: emps.filter(e => e.status === 'Active').length, byDept: empByDept },
-        items:     { total: items.length, pending: itemByStatus['Pending'] || 0, byStatus: itemByStatus, totalCost },
-        laptops:   { total: laps.length, available: lapByStatus['Available'] || 0, byStatus: lapByStatus },
+        totalAssets, assignedAssets, availableAssets, replacedAssets,
+        totalItems, totalLaptops, activeLaptops, pendingItems,
+        totalCost, expiringIn30,
+        deptMap, statusMap, monthlyPurchases,
+        recentReplacements, expiringWarrantiesDetail,
       });
     }
   };
@@ -224,3 +274,8 @@
   };
 
 })();
+
+// Expose `api` as a plain global so app.js can reference it without `window.` prefix
+// (In Electron, contextBridge does this; in browser we do it manually)
+// eslint-disable-next-line no-var
+var api = window.api;
