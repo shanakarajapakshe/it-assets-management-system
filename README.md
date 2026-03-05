@@ -4,6 +4,15 @@ A cross-platform desktop application for managing IT assets — including laptop
 
 ---
 
+## 🌐 Live Project Page (GitHub Pages)
+
+This project is published using **GitHub Pages** for documentation and preview purposes.
+
+🔗 **Live URL:**  
+https://shanakarajapakshe.github.io/it-assets-management-system/
+
+---
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
