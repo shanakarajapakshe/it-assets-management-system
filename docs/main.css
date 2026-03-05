@@ -739,6 +739,9 @@ body.light .dtbl tbody tr:hover { background: #d8e3f2; }
 
 @media (max-width: 768px) {
 
+  /* ── Allow the page to scroll naturally on mobile ── */
+  html, body { overflow: auto; height: auto; }
+
   /* ── Hamburger visible, window controls hidden ── */
   .tb-hamburger { display: flex !important; align-items: center; justify-content: center; width: 44px; height: var(--titlebar); }
 
@@ -752,12 +755,13 @@ body.light .dtbl tbody tr:hover { background: #d8e3f2; }
     transition: transform .25s cubic-bezier(.16,1,.3,1);
     z-index: 500;
     padding-top: 12px;
+    overflow-y: auto;
   }
   #sidebar.open { transform: translateX(0); }
 
-  /* ── Content takes full width ── */
-  #shell { display: block; }
-  #content { width: 100%; }
+  /* ── Shell & content: full natural height, normal scroll ── */
+  #shell { display: block; height: auto; min-height: calc(100vh - var(--titlebar)); }
+  #content { width: 100%; overflow: visible; height: auto; }
 
   /* ── Pages tighter padding ── */
   .page { padding: 18px 14px 32px; }
