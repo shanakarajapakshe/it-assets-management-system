@@ -27,3 +27,7 @@ npm start
 
 ## Backup System
 Auto-backup before every write. Max 10 per file. View in Backups page.
+=======
+# it-assets-management-system
+A desktop-based IT Assets Management System designed to track hardware, software, and asset allocation within an organization.
+
