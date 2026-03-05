@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline';" />
+  <title>IT Asset Manager Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Nunito+Sans:opsz,wght@6..12,300;6..12,400;6..12,500;6..12,600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+
+<body>
+
+  <!-- ═══ TITLEBAR ══════════════════════════════════════════════════════════════ -->
+  <div id="titlebar">
+    <div class="tb-left">
+      <div class="tb-logo">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <rect x="2" y="2" width="8" height="8" rx="1.5" fill="#1e90ff" />
+          <rect x="12" y="2" width="8" height="8" rx="1.5" fill="#00d4aa" opacity="0.8" />
+          <rect x="2" y="12" width="8" height="8" rx="1.5" fill="#00d4aa" opacity="0.6" />
+          <rect x="12" y="12" width="8" height="8" rx="1.5" fill="#1e90ff" opacity="0.5" />
+        </svg>
+      </div>
+      <span class="tb-title">IT Asset Manager <span class="tb-pro">PRO</span></span>
+    </div>
+    <div class="tb-right">
+      <button class="tb-ctrl" id="tc-min">—</button>
+      <button class="tb-ctrl" id="tc-max">□</button>
+      <button class="tb-ctrl tb-close" id="tc-cls">✕</button>
+    </div>
+  </div>
+
+  <!-- ═══ LAYOUT ════════════════════════════════════════════════════════════════ -->
+  <div id="shell">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar">
+      <nav class="nav">
+        <a class="nav-item active" data-page="dashboard">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <rect x="2" y="2" width="7" height="7" rx="1.5" fill="currentColor" opacity=".9" />
+            <rect x="11" y="2" width="7" height="7" rx="1.5" fill="currentColor" opacity=".5" />
+            <rect x="2" y="11" width="7" height="7" rx="1.5" fill="currentColor" opacity=".5" />
+            <rect x="11" y="11" width="7" height="7" rx="1.5" fill="currentColor" opacity=".3" />
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-item" data-page="employees">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <circle cx="10" cy="7" r="3.5" fill="currentColor" />
+            <path d="M3 17c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.8" fill="none"
+              stroke-linecap="round" />
+          </svg>
+          <span>Employee PCs</span>
+          <span class="nav-badge" id="nb-emp">0</span>
+        </a>
+        <a class="nav-item" data-page="laptops">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <rect x="2" y="3" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.7" fill="none" />
+            <path d="M5 17h10M8 14v3M12 14v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span>Laptop Inventory</span>
+          <span class="nav-badge" id="nb-lap">0</span>
+        </a>
+        <a class="nav-item" data-page="purchasing">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.8" fill="none" />
+            <path d="M7 4V3a1 1 0 012 0v1M11 4V3a1 1 0 012 0v1" stroke="currentColor" stroke-width="1.5"
+              stroke-linecap="round" />
+            <path d="M6 9h8M6 13h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span>Purchasing</span>
+          <span class="nav-badge" id="nb-it">0</span>
+        </a>
+        <a class="nav-item" data-page="reports">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <path d="M4 4h8l4 4v8a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1" stroke="currentColor" stroke-width="1.8"
+              fill="none" />
+            <path d="M12 4v4h4M7 11h6M7 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span>Reports</span>
+        </a>
+        <a class="nav-item" data-page="floorplan">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.7" fill="none" />
+            <path d="M2 8h16M2 13h16M8 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+          <span>Floor Plan</span>
+        </a>
+        <a class="nav-item" data-page="backups">
+          <svg class="nav-ic" viewBox="0 0 20 20">
+            <path d="M10 3a7 7 0 110 14A7 7 0 0110 3z" stroke="currentColor" stroke-width="1.8" fill="none" />
+            <path d="M10 7v4l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <span>Backups</span>
+        </a>
+      </nav>
+      <div class="sidebar-btm">
+        <button class="sb-action" id="btn-open-folder">
+          <svg width="14" height="14" viewBox="0 0 20 20">
+            <path d="M3 7h14a1 1 0 011 1v7a1 1 0 01-1 1H3a1 1 0 01-1-1V8a1 1 0 011-1z" stroke="currentColor"
+              stroke-width="1.6" fill="none" />
+            <path d="M3 7l2-3h5l2 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          Data Folder
+        </button>
+        <button class="sb-action" id="btn-theme-toggle">
+          <svg width="14" height="14" viewBox="0 0 20 20" id="theme-icon">
+            <path d="M17 12.5A7 7 0 0 1 7.5 3a7.002 7.002 0 1 0 9.5 9.5z" fill="currentColor" />
+          </svg>
+          <span id="theme-label">Light Mode</span>
+        </button>
+        <div class="sb-version">v2.0 Pro</div>
+      </div>
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <main id="content">
+
+      <!-- ══ DASHBOARD ══ -->
+      <section id="page-dashboard" class="page active">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>Dashboard</h1>
+            <p>Live overview of IT assets</p>
+          </div>
+          <button class="btn-ghost" id="dash-refresh">↺ Refresh</button>
+        </div>
+        <!-- KPI Cards -->
+        <div class="kpi-grid" id="kpi-grid"></div>
+        <!-- Charts Row -->
+        <div class="charts-row">
+          <div class="chart-panel" id="cp-dept">
+            <div class="cp-hd">PCs by Department</div>
+            <div id="chart-dept" class="bar-chart"></div>
+          </div>
+          <div class="chart-panel" id="cp-status">
+            <div class="cp-hd">Asset Status</div>
+            <div id="chart-status" class="donut-wrap"></div>
+          </div>
+          <div class="chart-panel" id="cp-monthly">
+            <div class="cp-hd">Monthly Purchases (6 mo)</div>
+            <div id="chart-monthly" class="bar-chart"></div>
+          </div>
+        </div>
+        <!-- Bottom Row -->
+        <div class="dash-bottom">
+          <div class="chart-panel flex1" id="cp-recent">
+            <div class="cp-hd">Recent Replacements</div>
+            <div id="recent-table"></div>
+          </div>
+          <div class="chart-panel w360" id="cp-warranty">
+            <div class="cp-hd">⚠ Warranties Expiring Soon</div>
+            <div id="warranty-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ EMPLOYEE PCs ══ -->
+      <section id="page-employees" class="page">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>Employee PC Inventory</h1>
+            <p>Manage all employee PC assignments &amp; tracking</p>
+          </div>
+          <div class="hd-actions">
+            <button class="btn-ghost" id="emp-import-btn">⇑ Import</button>
+            <button class="btn-primary" id="emp-add-btn">+ Add Employee PC</button>
+          </div>
+        </div>
+        <!-- Filters + Search -->
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg class="search-ic" width="14" height="14" viewBox="0 0 20 20">
+              <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.8" fill="none" />
+              <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            <input id="emp-search" class="search-inp" placeholder="Search name, serial, department, IP…" />
+          </div>
+          <div class="filter-row">
+            <select id="emp-f-status" class="fsel">
+              <option value="">All Status</option>
+              <option>Active</option>
+              <option>Available</option>
+              <option>Replaced</option>
+              <option>Returned</option>
+              <option>Decommissioned</option>
+              <option>In Repair</option>
+            </select>
+            <select id="emp-f-dept" class="fsel">
+              <option value="">All Departments</option>
+            </select>
+            <select id="emp-f-type" class="fsel">
+              <option value="">All Types</option>
+              <option>Desktop</option>
+              <option>Laptop</option>
+              <option>Workstation</option>
+              <option>All-in-One</option>
+            </select>
+            <select id="emp-f-floor" class="fsel">
+              <option value="">All Floors</option>
+              <option>Floor 1</option>
+              <option>Floor 2</option>
+              <option>Floor 3</option>
+              <option>Boardroom</option>
+            </select>
+          </div>
+        </div>
+        <!-- Table -->
+        <div class="tbl-wrap">
+          <table class="dtbl" id="emp-tbl">
+            <thead>
+              <tr>
+                <th data-sort="id">Asset ID <span class="sort-ic">⇅</span></th>
+                <th data-sort="employeeName">Employee <span class="sort-ic">⇅</span></th>
+                <th data-sort="department">Dept / Role <span class="sort-ic">⇅</span></th>
+                <th data-sort="pcSerialNumber">Serial No.</th>
+                <th>PC Brand / Specs</th>
+                <th data-sort="status">Status <span class="sort-ic">⇅</span></th>
+                <th data-sort="warrantyExpiry">Warranty <span class="sort-ic">⇅</span></th>
+                <th data-sort="assignedDate">Assigned <span class="sort-ic">⇅</span></th>
+                <th data-sort="floor">Floor <span class="sort-ic">⇅</span></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="emp-tbody"></tbody>
+          </table>
+          <div class="empty-state hidden" id="emp-empty">
+            <div class="es-icon">⊟</div>
+            <p>No employee PC records found.</p>
+            <button class="btn-primary" onclick="openEmpModal()">Add First Record</button>
+          </div>
+        </div>
+        <div class="tbl-foot" id="emp-foot">
+          <div id="emp-info"></div>
+          <div class="pagination" id="emp-pages"></div>
+        </div>
+      </section>
+
+      <!-- ══ LAPTOP INVENTORY ══ -->
+      <section id="page-laptops" class="page">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>CSEC Laptop Inventory</h1>
+            <p>Track laptop assignments, returns &amp; equipment status</p>
+          </div>
+          <div class="hd-actions">
+            <button class="btn-ghost" id="lap-import-btn">⇑ Import</button>
+            <button class="btn-primary" id="lap-add-btn">+ Add Laptop</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg class="search-ic" width="14" height="14" viewBox="0 0 20 20">
+              <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.8" fill="none" />
+              <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            <input id="lap-search" class="search-inp" placeholder="Search employee, serial, brand, location…" />
+          </div>
+          <div class="filter-row">
+            <select id="lap-f-status" class="fsel">
+              <option value="">All Status</option>
+              <option>Active</option>
+              <option>Available</option>
+              <option>Returned</option>
+              <option>In Repair</option>
+              <option>Decommissioned</option>
+            </select>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="dtbl" id="lap-tbl">
+            <thead>
+              <tr>
+                <th data-sort="id">Inv. No <span class="sort-ic">⇅</span></th>
+                <th data-sort="currentEmployee">Employee <span class="sort-ic">⇅</span></th>
+                <th data-sort="companyId">Company ID</th>
+                <th data-sort="workingLocation">Location <span class="sort-ic">⇅</span></th>
+                <th data-sort="laptopBrand">Laptop Brand</th>
+                <th>Serial No</th>
+                <th>Other Equip.</th>
+                <th data-sort="status">Status <span class="sort-ic">⇅</span></th>
+                <th data-sort="receivedDate">Received <span class="sort-ic">⇅</span></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="lap-tbody"></tbody>
+          </table>
+          <div class="empty-state hidden" id="lap-empty">
+            <div class="es-icon">⊟</div>
+            <p>No laptop records found.</p>
+            <button class="btn-primary" onclick="openLapModal()">Add First Laptop</button>
+          </div>
+        </div>
+        <div class="tbl-foot" id="lap-foot">
+          <div id="lap-info"></div>
+          <div class="pagination" id="lap-pages"></div>
+        </div>
+      </section>
+
+      <!-- ══ PURCHASING ══ -->
+      <section id="page-purchasing" class="page">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>IT Purchasing &amp; Replacements</h1>
+            <p>Track newly purchased items and replacement assignments</p>
+          </div>
+          <div class="hd-actions">
+            <button class="btn-ghost" id="it-import-btn">⇑ Import</button>
+            <button class="btn-primary" id="it-add-btn">+ Add IT Item</button>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg class="search-ic" width="14" height="14" viewBox="0 0 20 20">
+              <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.8" fill="none" />
+              <path d="M13.5 13.5L18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            <input id="it-search" class="search-inp" placeholder="Search item, serial, supplier, employee…" />
+          </div>
+          <div class="filter-row">
+            <select id="it-f-status" class="fsel">
+              <option value="">All Status</option>
+              <option>Pending</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+              <option>On Hold</option>
+            </select>
+            <select id="it-f-type" class="fsel">
+              <option value="">All Types</option>
+              <option>Desktop PC</option>
+              <option>Laptop</option>
+              <option>Monitor</option>
+              <option>Keyboard</option>
+              <option>Mouse</option>
+              <option>Printer</option>
+              <option>UPS</option>
+              <option>Network Switch</option>
+              <option>Other</option>
+            </select>
+            <select id="it-f-dept" class="fsel">
+              <option value="">All Departments</option>
+            </select>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table class="dtbl" id="it-tbl">
+            <thead>
+              <tr>
+                <th data-sort="id">Item ID <span class="sort-ic">⇅</span></th>
+                <th data-sort="itemName">Item / Type <span class="sort-ic">⇅</span></th>
+                <th data-sort="serialNumber">Serial No.</th>
+                <th data-sort="purchaseDate">Purchase Date <span class="sort-ic">⇅</span></th>
+                <th data-sort="cost">Cost <span class="sort-ic">⇅</span></th>
+                <th>Supplier</th>
+                <th>Warranty</th>
+                <th data-sort="replacementStatus">Repl. Status <span class="sort-ic">⇅</span></th>
+                <th>Assigned To</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="it-tbody"></tbody>
+          </table>
+          <div class="empty-state hidden" id="it-empty">
+            <div class="es-icon">⊟</div>
+            <p>No IT items found.</p>
+            <button class="btn-primary" onclick="openItModal()">Add First Item</button>
+          </div>
+        </div>
+        <div class="tbl-foot" id="it-foot">
+          <div id="it-info"></div>
+          <div class="pagination" id="it-pages"></div>
+        </div>
+      </section>
+
+      <!-- ══ REPORTS ══ -->
+      <section id="page-reports" class="page">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>Reports &amp; Export</h1>
+            <p>Generate filtered reports and export data</p>
+          </div>
+        </div>
+        <!-- Report Builder -->
+        <div class="report-builder">
+          <div class="rb-filters">
+            <h3>Report Filters</h3>
+            <div class="rb-grid">
+              <div class="fg">
+                <label>Report Type</label>
+                <select id="rpt-type" class="form-ctrl">
+                  <option value="all">Full Report (All Sheets)</option>
+                  <option value="employee">Employee PCs Only</option>
+                  <option value="items">IT Items Only</option>
+                  <option value="laptop">Laptop Inventory Only</option>
+                  <option value="summary">Summary Sheet Only</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Export Format</label>
+                <select id="rpt-format" class="form-ctrl">
+                  <option value="xlsx">Excel (.xlsx)</option>
+                  <option value="pdf">PDF (current view)</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Department</label>
+                <select id="rpt-dept" class="form-ctrl">
+                  <option value="">All Departments</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Status</label>
+                <select id="rpt-status" class="form-ctrl">
+                  <option value="">All Status</option>
+                  <option>Active</option>
+                  <option>Available</option>
+                  <option>Replaced</option>
+                  <option>Returned</option>
+                  <option>Decommissioned</option>
+                  <option>In Repair</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label>Purchase Date From</label>
+                <input type="date" id="rpt-from" class="form-ctrl" />
+              </div>
+              <div class="fg">
+                <label>Purchase Date To</label>
+                <input type="date" id="rpt-to" class="form-ctrl" />
+              </div>
+            </div>
+            <button class="btn-primary btn-lg" id="rpt-export-btn">⬇ Generate &amp; Export</button>
+          </div>
+          <div class="rb-presets">
+            <h3>Quick Export Presets</h3>
+            <div class="preset-list">
+              <div class="preset-card" data-preset="emp-all">
+                <div class="pc-icon">⊞</div>
+                <div><strong>All Employee PCs</strong>
+                  <p>Complete PC inventory with specs and status</p>
+                </div>
+                <button class="btn-sm btn-primary" data-preset="emp-all">Export</button>
+              </div>
+              <div class="preset-card" data-preset="pending">
+                <div class="pc-icon">◎</div>
+                <div><strong>Pending Replacements</strong>
+                  <p>All IT items awaiting assignment</p>
+                </div>
+                <button class="btn-sm btn-primary" data-preset="pending">Export</button>
+              </div>
+              <div class="preset-card" data-preset="warranty">
+                <div class="pc-icon">⚠</div>
+                <div><strong>Warranty Report</strong>
+                  <p>Assets with warranties expiring in 90 days</p>
+                </div>
+                <button class="btn-sm btn-primary" data-preset="warranty">Export</button>
+              </div>
+              <div class="preset-card" data-preset="full">
+                <div class="pc-icon">◈</div>
+                <div><strong>Full Asset Report</strong>
+                  <p>All data + summary statistics</p>
+                </div>
+                <button class="btn-sm btn-primary" data-preset="full">Export</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ FLOOR PLAN ══ -->
+      <section id="page-floorplan" class="page">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>Floor Plan</h1>
+            <p>PC asset distribution across all floors</p>
+          </div>
+          <div class="hd-actions">
+            <select id="fp-floor-sel" class="fsel" style="font-size:13px;padding:8px 14px;">
+              <option value="all">All Floors</option>
+              <option value="1">Floor 1</option>
+              <option value="2">Floor 2</option>
+              <option value="3">Floor 3</option>
+              <option value="4">Boardroom</option>
+            </select>
+          </div>
+        </div>
+        <!-- Floor summary cards -->
+        <div class="fp-summary" id="fp-summary"></div>
+        <!-- Floor detail grid -->
+        <div id="fp-detail"></div>
+      </section>
+
+      <!-- ══ BACKUPS ══ -->
+      <section id="page-backups" class="page">
+        <div class="page-hd">
+          <div class="page-hd-text">
+            <h1>Backup Manager</h1>
+            <p>Auto-backups are created before every data change (max 10 kept per file)</p>
+          </div>
+          <button class="btn-ghost" id="backup-refresh">↺ Refresh</button>
+        </div>
+        <div id="backup-list" class="backup-list"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ═══ EMPLOYEE MODAL ════════════════════════════════════════════════════════ -->
+  <div id="emp-modal-overlay" class="overlay hidden">
+    <div class="modal modal-lg">
+      <div class="modal-hd">
+        <h2 id="emp-modal-title">Add Employee PC</h2>
+        <button class="modal-x" onclick="closeModal('emp')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="emp-form" class="mform">
+          <div class="mf-section">Employee Information</div>
+          <div class="fg"><label>Employee Name</label><input name="employeeName" class="form-ctrl"
+              placeholder="Full name" /></div>
+          <div class="fg"><label>Employee ID</label><input name="employeeId" class="form-ctrl" placeholder="EMP-001" />
+          </div>
+          <div class="fg"><label>Department *</label><input name="department" class="form-ctrl" required
+              placeholder="Finance, HR, IT…" /></div>
+          <div class="fg"><label>Designation</label><input name="designation" class="form-ctrl"
+              placeholder="Job title" /></div>
+
+          <div class="mf-section">PC Details</div>
+          <div class="fg"><label>PC Serial Number *</label><input name="pcSerialNumber" class="form-ctrl" required
+              placeholder="SN-XXXXX" /></div>
+          <div class="fg"><label>PC Brand / Model</label><input name="pcBrand" class="form-ctrl"
+              placeholder="Dell OptiPlex 7090" /></div>
+          <div class="fg"><label>PC Type</label>
+            <select name="pcType" class="form-ctrl">
+              <option>Desktop</option>
+              <option>Laptop</option>
+              <option>Workstation</option>
+              <option>All-in-One</option>
+              <option>Mini PC</option>
+            </select>
+          </div>
+          <div class="fg"><label>Status</label>
+            <select name="status" class="form-ctrl">
+              <option>Active</option>
+              <option>Available</option>
+              <option>Replaced</option>
+              <option>Returned</option>
+              <option>Decommissioned</option>
+              <option>In Repair</option>
+            </select>
+          </div>
+
+          <div class="mf-section">Specifications</div>
+          <div class="fg"><label>Processor</label><input name="processor" class="form-ctrl"
+              placeholder="Intel Core i5-12400" /></div>
+          <div class="fg"><label>RAM (GB)</label><input name="ram" class="form-ctrl" type="number" placeholder="8" />
+          </div>
+          <div class="fg"><label>Storage</label><input name="storage" class="form-ctrl" placeholder="256GB NVMe SSD" />
+          </div>
+          <div class="fg"><label>Operating System</label><input name="os" class="form-ctrl"
+              placeholder="Windows 11 Pro" /></div>
+          <div class="fg"><label>Monitor</label><input name="monitor" class="form-ctrl"
+              placeholder="24&quot; Dell U2422H" /></div>
+          <div class="fg"><label>Peripherals</label><input name="peripherals" class="form-ctrl"
+              placeholder="Keyboard, Mouse, Webcam" /></div>
+          <div class="fg"><label>Graphic Card</label><input name="graphicCard" class="form-ctrl"
+              placeholder="NVIDIA GeForce GTX 1650, Intel UHD 730…" /></div>
+          <div class="fg"><label>UPS</label>
+            <select name="hasUps" class="form-ctrl">
+              <option value="">— Select —</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div class="fg"><label>Internet Method</label>
+            <select name="internetMethod" class="form-ctrl">
+              <option value="">— Select —</option>
+              <option>LAN</option>
+              <option>WiFi</option>
+              <option>LAN + WiFi</option>
+              <option>Dongle</option>
+              <option>None</option>
+            </select>
+          </div>
+
+          <div class="mf-section">Network</div>
+          <div class="fg"><label>IP Address</label><input name="ipAddress" class="form-ctrl"
+              placeholder="192.168.1.x" /></div>
+          <div class="fg"><label>MAC Address</label><input name="macAddress" class="form-ctrl"
+              placeholder="00:00:00:00:00:00" /></div>
+          <div class="fg"><label>Location / Room</label><input name="location" class="form-ctrl"
+              placeholder="Floor 2, Room 201" /></div>
+          <div class="fg"><label>Floor</label>
+            <select name="floor" class="form-ctrl">
+              <option value="">— Select Floor —</option>
+              <option>Floor 1</option>
+              <option>Floor 2</option>
+              <option>Floor 3</option>
+              <option>Boardroom</option>
+            </select>
+          </div>
+          <div class="fg"><label>Condition</label>
+            <select name="condition" class="form-ctrl">
+              <option>Good</option>
+              <option>Excellent</option>
+              <option>Fair</option>
+              <option>Poor</option>
+            </select>
+          </div>
+
+          <div class="mf-section">Dates</div>
+          <div class="fg"><label>Purchase Date</label><input name="purchaseDate" class="form-ctrl" type="date" /></div>
+          <div class="fg"><label>Warranty Expiry</label><input name="warrantyExpiry" class="form-ctrl" type="date" />
+          </div>
+          <div class="fg"><label>Assigned Date</label><input name="assignedDate" class="form-ctrl" type="date" /></div>
+          <div class="fg full"><label>Notes</label><textarea name="notes" class="form-ctrl" rows="3"
+              placeholder="Additional notes…"></textarea></div>
+        </form>
+      </div>
+      <div class="modal-ft">
+        <button class="btn-ghost" onclick="closeModal('emp')">Cancel</button>
+        <button class="btn-primary" id="emp-save-btn">Save Record</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ IT ITEM MODAL ════════════════════════════════════════════════════════ -->
+  <div id="it-modal-overlay" class="overlay hidden">
+    <div class="modal modal-lg">
+      <div class="modal-hd">
+        <h2 id="it-modal-title">Add IT Item</h2>
+        <button class="modal-x" onclick="closeModal('it')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="it-form" class="mform">
+          <div class="mf-section">Item Information</div>
+          <div class="fg"><label>Item Name *</label><input name="itemName" class="form-ctrl" required
+              placeholder="Desktop PC, Monitor…" /></div>
+          <div class="fg"><label>Item Type *</label>
+            <select name="itemType" class="form-ctrl">
+              <option>Desktop PC</option>
+              <option>Laptop</option>
+              <option>Monitor</option>
+              <option>Keyboard</option>
+              <option>Mouse</option>
+              <option>Printer</option>
+              <option>UPS</option>
+              <option>Network Switch</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg"><label>Brand / Model</label><input name="brand" class="form-ctrl"
+              placeholder="Dell OptiPlex 7090" /></div>
+          <div class="fg"><label>Serial Number</label><input name="serialNumber" class="form-ctrl"
+              placeholder="SN-NEW-XXXXX" /></div>
+          <div class="fg full"><label>Specifications</label><input name="specifications" class="form-ctrl"
+              placeholder="i5-12400, 16GB RAM, 512GB SSD, Win11 Pro" /></div>
+
+          <div class="mf-section">Purchase Details</div>
+          <div class="fg"><label>Purchase Date</label><input name="purchaseDate" class="form-ctrl" type="date" /></div>
+          <div class="fg"><label>Cost (LKR)</label><input name="cost" class="form-ctrl" type="number" step="0.01"
+              placeholder="0.00" /></div>
+          <div class="fg"><label>Supplier</label><input name="supplier" class="form-ctrl"
+              placeholder="Tech Vendor Inc." /></div>
+          <div class="fg"><label>Invoice Number</label><input name="invoiceNumber" class="form-ctrl"
+              placeholder="INV-2024-XXXX" /></div>
+          <div class="fg"><label>PO Number</label><input name="poNumber" class="form-ctrl" placeholder="PO-XXXX" />
+          </div>
+          <div class="fg"><label>Warranty (Months)</label><input name="warrantyPeriod" class="form-ctrl" type="number"
+              placeholder="24" /></div>
+          <div class="fg"><label>Warranty Expiry</label><input name="warrantyExpiry" class="form-ctrl" type="date" />
+          </div>
+
+          <div class="mf-section">Replacement Tracking</div>
+          <div class="fg"><label>Replacement Status</label>
+            <select name="replacementStatus" class="form-ctrl">
+              <option>Pending</option>
+              <option>In Progress</option>
+              <option>Completed</option>
+              <option>On Hold</option>
+            </select>
+          </div>
+          <div class="fg"><label>Asset Status</label>
+            <select name="assetStatus" class="form-ctrl">
+              <option>Available</option>
+              <option>Assigned</option>
+              <option>In Repair</option>
+            </select>
+          </div>
+          <div class="fg full"><label>Replacement Reason</label><textarea name="reason" class="form-ctrl" rows="2"
+              placeholder="End of life, hardware failure, upgrade…"></textarea></div>
+          <div class="fg"><label>Location / PC Name</label><input name="replacementLocation" class="form-ctrl"
+              placeholder="Floor 2, Room 201 / PC-0012" /></div>
+          <div class="fg full"><label>Notes</label><textarea name="notes" class="form-ctrl" rows="2"
+              placeholder="Additional notes…"></textarea></div>
+        </form>
+      </div>
+      <div class="modal-ft">
+        <button class="btn-ghost" onclick="closeModal('it')">Cancel</button>
+        <button class="btn-primary" id="it-save-btn">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LAPTOP MODAL ═══════════════════════════════════════════════════════════════════ -->
+  <div id="lap-modal-overlay" class="overlay hidden">
+    <div class="modal modal-lg">
+      <div class="modal-hd">
+        <h2 id="lap-modal-title">Add Laptop</h2>
+        <button class="modal-x" onclick="closeModal('lap')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="lap-form" class="mform">
+          <div class="mf-section">Employee Information</div>
+          <div class="fg"><label>Current Employee Name</label><input name="currentEmployee" class="form-ctrl"
+              placeholder="Full name" /></div>
+          <div class="fg"><label>Employee Company ID</label><input name="companyId" class="form-ctrl"
+              placeholder="EMP-001" /></div>
+          <div class="fg"><label>Employee Received Date</label><input name="receivedDate" class="form-ctrl"
+              type="date" /></div>
+          <div class="fg"><label>Working Location</label><input name="workingLocation" class="form-ctrl"
+              placeholder="Floor 2, Room 201" /></div>
+
+          <div class="mf-section">Laptop Details</div>
+          <div class="fg"><label>Laptop Brand *</label><input name="laptopBrand" class="form-ctrl"
+              placeholder="Dell, HP, Lenovo…" /></div>
+          <div class="fg"><label>Laptop Serial No *</label><input name="laptopSerial" class="form-ctrl" required
+              placeholder="SN-XXXXX" /></div>
+          <div class="fg full"><label>Other Equipments</label><input name="otherEquipments" class="form-ctrl"
+              placeholder="Mouse, Bag, Charger, Lock…" /></div>
+          <div class="fg"><label>Status</label>
+            <select name="status" class="form-ctrl">
+              <option>Active</option>
+              <option>Available</option>
+              <option>Returned</option>
+              <option>In Repair</option>
+              <option>Decommissioned</option>
+            </select>
+          </div>
+
+          <div class="mf-section">Return Information</div>
+          <div class="fg"><label>Last Employee Returned Date</label><input name="returnedDate" class="form-ctrl"
+              type="date" /></div>
+          <div class="fg"><label>Returned Equipment Condition</label>
+            <select name="returnedCondition" class="form-ctrl">
+              <option value="">— Select —</option>
+              <option>Good</option>
+              <option>Fair</option>
+              <option>Poor</option>
+              <option>Damaged</option>
+            </select>
+          </div>
+          <div class="fg"><label>Last Employee Name</label><input name="lastEmployee" class="form-ctrl"
+              placeholder="Previous employee" /></div>
+          <div class="fg full"><label>Notes</label><textarea name="notes" class="form-ctrl" rows="3"
+              placeholder="Additional notes…"></textarea></div>
+        </form>
+      </div>
+      <div class="modal-ft">
+        <button class="btn-ghost" onclick="closeModal('lap')">Cancel</button>
+        <button class="btn-primary" id="lap-save-btn">Save Laptop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ASSIGN / REPLACE MODAL ═══════════════════════════════════════════════ -->
+  <div id="assign-modal-overlay" class="overlay hidden">
+    <div class="modal modal-sm">
+      <div class="modal-hd">
+        <h2 id="assign-title">Assign Replacement</h2>
+        <button class="modal-x" onclick="closeModal('assign')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="assign-info" id="assign-item-info"></div>
+        <form id="assign-form" class="mform">
+          <div class="fg full">
+            <label>Select Employee PC to Replace</label>
+            <select id="assign-emp-sel" class="form-ctrl">
+              <option value="">— Choose employee PC —</option>
+            </select>
+          </div>
+          <div class="fg full">
+            <label>Replacement Reason</label>
+            <textarea id="assign-reason" class="form-ctrl" rows="3"
+              placeholder="End of life, failure, upgrade…"></textarea>
+          </div>
+          <div class="assign-mode-row">
+            <label><input type="radio" name="assign-mode" value="replace" checked /> Mark as Replacement (old PC →
+              Replaced)</label>
+            <label><input type="radio" name="assign-mode" value="assign" /> Simple Assignment (no old PC update)</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-ft">
+        <button class="btn-ghost" onclick="closeModal('assign')">Cancel</button>
+        <button class="btn-primary" id="assign-save-btn">✓ Confirm Assignment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CONFIRM ═══════════════════════════════════════════════════════════════ -->
+  <div id="confirm-overlay" class="overlay hidden">
+    <div class="modal modal-xs">
+      <div class="confirm-inner">
+        <div class="confirm-icon" id="confirm-icon">⚠</div>
+        <h3 id="confirm-title">Confirm</h3>
+        <p id="confirm-msg"></p>
+        <div class="confirm-btns">
+          <button class="btn-ghost" id="confirm-no">Cancel</button>
+          <button class="btn-danger" id="confirm-yes">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST ════════════════════════════════════════════════════════════════ -->
+  <div id="toast-root"></div>
+
+  <script>
+    // Restore saved theme before app.js loads
+    try {
+      if (localStorage.getItem('itam-theme') === 'light') {
+        document.body.classList.add('light');
+        document.getElementById('theme-label').textContent = 'Dark Mode';
+        document.getElementById('theme-icon').innerHTML = '<path d="M10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm0-10v2m0 12v2M4.22 5.64l1.42 1.42m8.72 8.72 1.42 1.42M2 10h2m12 0h2M4.22 14.36l1.42-1.42m8.72-8.72 1.42-1.42" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+      }
+    } catch (e) { }
+  </script>
+  <script src="app.js"></script>
+</body>
+
+</html>
